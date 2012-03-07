@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="item">
+ <h2>Sources</h2>
+ <ul>
+  {% for source in sources %}
+   <li>{{ source.name }}</li>
+  {% else %}
+   <li>No Sources</li>
+  {% endfor %}
+ </ul>
+</div>
+{% endblock %}

@@ -1,0 +1,10 @@
+[app]
+items_per_page      = 50
+secret_key          = yek_terces
+
+[server]
+port                = 5000
+debug               = True
+
+[database]
+connection          = sqlite:///potion.sqlite

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="item">
+ <h2>Add source</h2>
+ <form method="post">
+  {% for field in form %}
+    {% if field.type == 'TextField' %}
+        {{ field.label }}
+        {{ field(class_='text') }}
+    {% elif field.type == 'SubmitField' %}
+        {{ field(class_='button') }}
+    {% else %}
+        {{ field }}
+    {% endif %}
+    {% if field.errors %}
+        <ul class="err">
+            {% for err in field.errors %}
+                <li>{{ err }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+  {% endfor %}
+  <input type="reset" class="button" value="Clear" />
+ </form>
+
+
+</div>
+{% endblock %}

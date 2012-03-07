@@ -1,0 +1,53 @@
+{% block doctype %}<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">{% endblock %}
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="content-language" content="en" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <title>[potion] {% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="/static/css/style.css" type="text/css" media="screen" charset="utf-8" />
+    {% block scripts %}
+    {% endblock %}
+    {% block styles %}
+    {% endblock %}
+</head>
+<body>
+ <div id="header">
+  <div id="query">
+   <form method="post" action="/query">
+    <input type="text" id="query_input" name="query" value="{{ query }}" />
+    <input type="submit" value="submit" />
+    <div class="hidden">
+     name: <input type="text" name="name" />
+     public: <input type="checkbox" checked="checked" />
+    </div>
+   </form>
+  </div>
+        <ul>
+            {% for k,v in menu %}
+            <li><a href="{{ k }}" {% if k == path %}class="highlight"{% endif %}>{{ v }}</a></li>
+            {% endfor %}
+        </ul>
+        {% block header %}
+        {% endblock %}
+  </div>
+    <div id="content">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class=flashes>
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+         {% block content %}
+         {% endblock %}
+    </div>
+    <div id="footer">
+          {% block footer %}
+          {% endblock %}
+    </div>
+</body>
+</html>
