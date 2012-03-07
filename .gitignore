@@ -1,0 +1,6 @@
+.potionrc
+*.pyc
+*.py
+.*.swp
+env
+potion.sqlite
