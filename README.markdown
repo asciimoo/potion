@@ -16,7 +16,7 @@ Potion (aka f33dme-ng) is a flask+sqlalchemy based feed/item reader.
 
 1.  install dependencies
 2.  copy potionrc_sample to .potionrc or /etc/potion.cfg and edit it
-3.  run `PYTHONPATH=$(pwd) python potion/model.py` to init db
+3.  run `PYTHONPATH=$(pwd) python potion/models.py` to init db
 4.  run `PYTHONPATH=$(pwd) python potion/webapp.py` to start the application
 
 ### License
