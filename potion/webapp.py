@@ -107,7 +107,7 @@ def archive():
     except:
         flash('Bad params')
         return redirect(request.referrer or '/')
-    db_session.query(Item).filter(Item.item_id._in(ids)).update({Item.archived: True})
+    db_session.query(Item).filter(Item.item_id.in_(ids)).update({Item.archived: True}, synchronize_session='fetch')
     db_session.commit()
     flash('Successfully archived items: %d' % len(ids))
     return redirect(request.referrer or '/')
