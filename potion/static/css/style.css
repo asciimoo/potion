@@ -19,6 +19,7 @@ input.text { display: block; margin: 2px 16px; width: 400px; }
 
 #footer { position: fixed; bottom: 0; left: 0; right: 0; height: 40px; vertical-align: middle; line-height: 40px; border-top: 1px solid #5B5BC7; background: #000000; }
 #footer input { border: 0; }
+#footer input[type="submit"] { cursor: pointer; }
 
 #query { float: left; padding: 20px; }
 
