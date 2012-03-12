@@ -140,9 +140,16 @@ def opml_import():
         o = opml.parse(url)
     except:
         return 'Cannot parse opml file %s' % url
-    for f in o:
-        s = Source(f.title,'feed', f.xmlUrl)
-        db_session.add(s)
+
+    def import_outline_element(o):
+        for f in o:
+            if hasattr(f,'xmlUrl'):
+                s = Source(f.title,'feed',f.xmlUrl)
+                db_session.add(s)
+            else:
+                import_outline_element(f)
+
+    import_outline_element(o) 
     db_session.commit()
     flash('import successed')
     return redirect(request.referrer or '/')
