@@ -16,8 +16,10 @@
 # (C) 2012- by Adam Tauber, <asciimoo@gmail.com>
 
 import ConfigParser
+from os import getenv
 
 cfg = ConfigParser.SafeConfigParser()
 cfg.read('/etc/potion.cfg')
+cfg.read(getenv('HOME')+'/.potionrc')
 cfg.read('.potionrc')
 
