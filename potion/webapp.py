@@ -132,7 +132,7 @@ def opml():
 
 @app.route('/opml/import', methods=['GET'])
 def opml_import():
-    url = request.args.get('query')
+    url = request.args.get('url')
     if not url:
         return 'Missing url'
     import opml
