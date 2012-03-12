@@ -27,7 +27,7 @@ menu_items  = (('/'                 , 'home')
               ,('/doc'              , 'documentation')
               ,('/add/source'       , 'add source')
               ,('/queries'          , 'queries')
-              ,('/top'              , 'top '+str(cfg.get('app', 'items_per_page')))
+              ,('/top'              , 'top '+cfg.get('app', 'items_per_page'))
               ,('/all'              , 'all')
               )
 
@@ -69,7 +69,7 @@ def doc():
 
 @app.route('/top', methods=['GET'])
 def top():
-    limit = cfg.get('app', 'items_per_page')
+    limit = int(cfg.get('app', 'items_per_page'))
     items = Item.query.filter(Item.archived==False).order_by(Item.added).limit(limit).all()
     return render_template('flat.html'
                           ,items        = items
@@ -145,4 +145,5 @@ def archive():
 if __name__ == "__main__":
     app.run(debug        = cfg.get('server', 'debug')
            ,use_debugger = cfg.get('server', 'debug')
+           ,port         = int(cfg.get('server', 'port'))
            )
