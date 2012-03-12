@@ -35,8 +35,9 @@ input.text { display: block; margin: 2px 16px; width: 400px; }
 .item_body pre { overflow: auto; padding: 4px;  }
 .item_body p { padding: 4px 0; max-width: 800px; text-align: justify; }
 
-.item_title { font-size: 1.4em; padding: 2px; background: #000000; }
-.item_title a { color: #5B5BC7; }
+.item_title { padding: 2px; background: #000000; }
+.item_name { font-size: 1.4em; color: #5B5BC7; }
+.item_source { padding: 0 0 4px 8px; }
 
 .item_head { width: 100%; }
 .item_head ul { margin: 0; padding: 0; }

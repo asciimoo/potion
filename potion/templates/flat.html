@@ -5,7 +5,6 @@
 <div class="item">
  <div class="item_head">
   <ul>
-      <li><a href="{{ item.source.address }}">{{ item.source.name }}</a></li>
    <li> {{ item.added.__str__()[:-7] }}</li>
    {% if item.archived %}<li>[archived]</li>{% endif %}
    {% for k,attr in item.attributes.iteritems() %}
@@ -14,7 +13,8 @@
   </ul>
  </div>
  <div class="item_title">
-     <a href="{{ item.url }}">{{ item.name }}</a>
+ <a class="item_name" href="{{ item.url }}">{{ item.name }}</a>
+ <div class="item_source"><a href="{{ item.source.address }}">{{ item.source.name }}</a></div>
  </div>
  <div class="item_body">
   {{ item.content|safe }}
