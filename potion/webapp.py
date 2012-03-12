@@ -100,6 +100,24 @@ def query_redirect():
 def do_query(q_str):
     return 'TODO ' + q_str
 
+
+@app.route('/opml/import', methods=['GET'])
+def opml_import():
+    url = request.args.get('query')
+    if not url:
+        return 'Missing url'
+    import opml
+    try:
+        o = opml.parse(url)
+    except:
+        return 'Cannot parse opml file %s' % url
+    for f in o:
+        s = Source(f.title,'feed', f.xmlUrl)
+        db_session.add(s)
+    db_session.commit()
+    flash('import successed')
+    return redirect(request.referrer or '/')
+
 @app.route('/archive', methods=['POST'])
 def archive():
     try:
