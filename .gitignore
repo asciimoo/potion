@@ -3,4 +3,4 @@
 *.py
 .*.swp
 env
-potion.sqlite
+*.sqlite
