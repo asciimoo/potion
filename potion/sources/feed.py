@@ -26,6 +26,7 @@ from urlparse import urlparse, urlunparse
 from itertools import ifilterfalse, imap
 import urllib
 import urllib2
+import httplib
 
 from potion.models import db_session, Source, Item
 
@@ -36,6 +37,23 @@ opener.addheaders = [('User-agent', '')]
 # removes annoying UTM params to urls.
 utmRe=re.compile('utm_(source|medium|campaign|content)=')
 def urlSanitize(url):
+    # handle any redirected urls from the feed, like
+    # ('http://feedproxy.google.com/~r/Torrentfreak/~3/8UY1UySQe1k/')
+    us=httplib.urlsplit(url)
+    if us.scheme=='http':
+        conn = httplib.HTTPConnection(us.netloc, timeout=3)
+        req = urllib.quote(url[7+len(us.netloc):])
+    elif us.scheme=='https':
+        conn = httplib.HTTPSConnection(us.netloc)
+        req = urllib.quote(url[8+len(us.netloc):])
+    #conn.set_debuglevel(9)
+    headers={'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)'}
+    conn.request("HEAD", req,None,headers)
+    res = conn.getresponse()
+    conn.close()
+    if res.status in [301, 304]:
+        url = res.getheader('Location')
+    # removes annoying UTM params to urls.
     pcs=urlparse(urllib.unquote_plus(url))
     tmp=list(pcs)
     tmp[4]='&'.join(ifilterfalse(utmRe.match, pcs.query.split('&')))
