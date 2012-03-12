@@ -112,6 +112,23 @@ def query_redirect():
 def do_query(q_str):
     return 'TODO ' + q_str
 
+@app.route('/archive', methods=['POST'])
+def archive():
+    try:
+        ids = map(int, request.form.get('ids', '').split(','))
+    except:
+        flash('Bad params')
+        return redirect(request.referrer or '/')
+    db_session.query(Item).filter(Item.item_id.in_(ids)).update({Item.archived: True}, synchronize_session='fetch')
+    db_session.commit()
+    flash('Successfully archived items: %d' % len(ids))
+    return redirect(request.referrer or '/')
+
+@app.route('/opml', methods=('GET',))
+def opml():
+    return render_template('opml.xml'
+                           ,sources = Source.query.filter(Source.source_type=='feed').all()
+                           )
 
 @app.route('/opml/import', methods=['GET'])
 def opml_import():
@@ -130,17 +147,6 @@ def opml_import():
     flash('import successed')
     return redirect(request.referrer or '/')
 
-@app.route('/archive', methods=['POST'])
-def archive():
-    try:
-        ids = map(int, request.form.get('ids', '').split(','))
-    except:
-        flash('Bad params')
-        return redirect(request.referrer or '/')
-    db_session.query(Item).filter(Item.item_id.in_(ids)).update({Item.archived: True}, synchronize_session='fetch')
-    db_session.commit()
-    flash('Successfully archived items: %d' % len(ids))
-    return redirect(request.referrer or '/')
 
 if __name__ == "__main__":
     app.run(debug        = cfg.get('server', 'debug')

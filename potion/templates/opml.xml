@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="2.0">
+    <head>
+        <title>potion.opml</title>
+    </head>
+    <body>
+      {% for s in sources %}
+      <outline text="{{ s.name }}" description="{{ s.name }}" htmlUrl="" language="unknown" title="{{ s.name }}" type="xml" xmlUrl="{{ s.address }}"/>
+      {% endfor %}
+     </body>
+</opml>
