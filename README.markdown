@@ -20,7 +20,7 @@ Potion (aka f33dme-ng) is a flask+sqlalchemy based feed/item reader.
 2.  clone source: `git clone git@github.com:asciimoo/potion.git && cd potion`
 3.  copy potionrc_sample to ./.potionrc or ~/.potionrc or /etc/potion.cfg: `cp potionrc_sample ~/.potionrc`
 4.  edit your config (set your secret_key!)
-5.  run `PYTHONPATH=$(pwd) python potion/models.py` to init db
+5.  run `PYTHONPATH=$(pwd) python potion/models.py init` to initialize your db
 6.  run `PYTHONPATH=$(pwd) python potion/webapp.py` to start the application
 
 ### Usage

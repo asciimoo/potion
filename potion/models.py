@@ -134,7 +134,13 @@ class Item(Base):
 
 
 if __name__ == '__main__':
-    Base.metadata.create_all(bind=engine)
+    from sys import argv
+    import code
+    if len(argv) == 2 and argv[1] == 'init':
+        Base.metadata.create_all(bind=engine)
+    else:
+        shell = code.InteractiveConsole(locals())
+        shell.interact()
     if 0:
         a = Source('dnet blog',     'feed','http://techblog.vsza.hu/atom.xml',        attributes={'etag': 'lipsum'})
         b = Source('stef blog',     'feed','http://www.ctrlc.hu/~stef/blog/atom.xml', attributes={'etag': 'lipsum'})
