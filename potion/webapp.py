@@ -60,9 +60,21 @@ def index():
                           ,sources  = Source.query.all()
                           )
 
+def get_unarchived_ids(items):
+    return [item.item_id for item in items if item.archived == False]
+
 @app.route('/doc', methods=['GET'])
 def doc():
     return 'TODO'
+
+@app.route('/top', methods=['GET'])
+def top():
+    limit = cfg.get('app', 'items_per_page')
+    items = Item.query.filter(Item.archived==False).order_by(Item.added).limit(limit).all()
+    return render_template('flat.html'
+                          ,items        = items
+                          ,unarchiveds  = get_unarchived_ids(items)
+                          )
 
 @app.route('/add/source', methods=['GET', 'POST'])
 def add_source():
@@ -80,7 +92,7 @@ def all():
     items = Item.query.all()
     return render_template('flat.html'
                           ,items        = items
-                          ,unarchiveds  = [item.item_id for item in items if item.archived == False]
+                          ,unarchiveds  = get_unarchived_ids(items)
                           )
 
 @app.route('/queries', methods=['GET'])
