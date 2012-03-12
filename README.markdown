@@ -26,6 +26,7 @@ Potion (aka f33dme-ng) is a flask+sqlalchemy based feed/item reader.
 ### Usage
 
 *   run `PYTHONPATH=$(pwd) python potion/sources/feed.py` to fetch new feed items
+*   run `PYTHONPATH=$(pwd) python potion/models.py` to get a python shell with db models
 
 ### License
 
