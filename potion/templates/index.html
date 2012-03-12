@@ -11,7 +11,7 @@
  <h2>Sources</h2>
  <ul>
   {% for source in sources %}
-   <li>{{ source.name }}</li>
+      <li>{{ source.name }} ({{ source.source_type }})</li>
   {% else %}
    <li>No Sources</li>
   {% endfor %}
