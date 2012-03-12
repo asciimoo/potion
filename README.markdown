@@ -12,6 +12,7 @@ Potion (aka f33dme-ng) is a flask+sqlalchemy based feed/item reader.
 *   python-feedparser
 *   python-flask
 *   flask-wtf
+*   python-opml
 
 ### Installation
 
