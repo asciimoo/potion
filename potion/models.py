@@ -134,10 +134,16 @@ class Item(Base):
 
 
 if __name__ == '__main__':
-    from sys import argv
+    from sys import argv, stdin
     import code
     if len(argv) == 2 and argv[1] == 'init':
         Base.metadata.create_all(bind=engine)
+    elif len(argv) == 2 and argv[1] == 'load':
+        for line in stdin:
+            title, url = line.split('\t')
+            s = Source(title.decode('utf8'),'feed',url.decode('utf8'))
+            db_session.add(s)
+        db_session.commit()
     else:
         shell = code.InteractiveConsole(locals())
         shell.interact()
