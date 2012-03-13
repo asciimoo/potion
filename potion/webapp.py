@@ -25,7 +25,7 @@ from flaskext.wtf import Form, TextField, Required, SubmitField
 
 menu_items  = (('/'                 , 'home')
               ,('/doc'              , 'documentation')
-              ,('/add/source'       , 'add source')
+              ,('/sources'          , 'sources')
               ,('/queries'          , 'queries')
               ,('/top'              , 'top '+cfg.get('app', 'items_per_page'))
               ,('/all'              , 'all')
@@ -78,8 +78,8 @@ def top():
                           ,unarchiveds  = get_unarchived_ids(items)
                           )
 
-@app.route('/add/source', methods=['GET', 'POST'])
-def add_source():
+@app.route('/sources', methods=['GET', 'POST'])
+def sources():
     form = SourceForm(request.form)
     if request.method == 'POST' and form.validate():
         s = Source(form.name.data, form.source_type.data, form.address.data)
@@ -87,7 +87,16 @@ def add_source():
         db_session.commit()
         flash('Source "%s" added' % form.name.data)
         return redirect(request.referrer or '/')
-    return render_template('add_source.html', form=form)
+    return render_template('sources.html'
+                          ,form     = form
+                          ,sources  = Source.query.all()
+                          )
+
+@app.route('/sources/delete/<int:s_id>', methods=['GET'])
+def del_source(s_id):
+    Source.query.filter(Source.source_id==s_id).delete()
+    flash('Source removed')
+    return redirect(request.referrer or '/')
 
 @app.route('/all')
 def all():

@@ -22,7 +22,18 @@
   {% endfor %}
   <input type="reset" class="button" value="Clear" />
  </form>
-
+ <h2>Edit sources</h2>
+    <table>
+        <tr><th>Name</th><th>Type</th><th>Modify</th><th>Delete</th><th>URL</th></tr>
+        {% for source in sources %}
+        <tr><td>{{ source.name }}</td>
+            <td class="center">{{ source.source_type }}</td>
+            <td class="center">x</td>
+            <td class="center"><a href="/sources/delete/{{ source.source_id }}" class="del_link">x</a></td>
+            <td><a href="{{ source.address }}" title="{{ source.address }}">{{ source.address }}</a></td>
+        </tr>
+        {% endfor %}
+    </table>
 
 </div>
 {% endblock %}

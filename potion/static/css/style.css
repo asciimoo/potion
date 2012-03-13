@@ -5,6 +5,11 @@ body { background: #222222 url('/static/images/bg.gif') repeat; background-attac
 input { margin: 0; padding: 0.5em; background: #000000; color: #FFFFFF; font-weight: bold; border: 1px solid #444444; }
 hr { margin: 0; border: 1px solid #5B5BC7; }
 label { display: block; }
+td, th { padding: 0 10px 2px 10px; margin: 0px;}
+th { border-width: 1px 0 1px 0; border-style: solid; border-color: #444444; }
+th { text-align: left; margin: 0;}
+tr:hover { background-color: #444444; }
+table { margin-left: 20px; border-spacing: 0; border-collapse: collapse; border-width: 0 1px 1px 1px; border-style: solid; border-color: #444444; }
 a { text-decoration: none; color: #90EE90; font-weight: bold; }
 a:hover { text-decoration: underline; }
 a:focus { color: red; }
@@ -46,4 +51,4 @@ input.text { display: block; margin: 2px 16px; width: 400px; }
 .item_head ul li { list-style: none; float: right; padding: 4px; }
 
 .right { float: right; }
-
+.center { text-align: center; }
