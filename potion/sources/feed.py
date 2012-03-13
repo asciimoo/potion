@@ -94,7 +94,7 @@ def parseFeed(feed):
         except:
            u = ''
         # checking duplications
-        if db_session.query(Item).filter(Item.source_id==feed.source_id).filter(Item.url==u).first():
+        if db_session.query(Item).filter(Item.source_id==feed.source_id).filter(Item.url==unicode(u)).first():
             continue
 
         try:
