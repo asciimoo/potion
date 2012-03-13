@@ -45,10 +45,12 @@ class SourceForm(Form):
 @app.context_processor
 def contex():
     global menu_items, cfg, query
-    return {'menu'  : menu_items
-           ,'cfg'   : cfg
-           ,'query' : ''
-           ,'path'  : request.path
+    return {'menu'              : menu_items
+           ,'cfg'               : cfg
+           ,'query'             : ''
+           ,'path'              : request.path
+           ,'unarchived_count'  : Item.query.filter(Item.archived==False).count()
+           ,'item_count'        : Item.query.count()
            }
 
 def parse_query(q):

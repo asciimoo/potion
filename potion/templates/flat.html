@@ -27,7 +27,7 @@
 
 {% block footer %}
 
-<div class="right">items: {{ items|length }} | unarchived: {{ unarchiveds|length }}</div>
+<div class="right">page: {{ items|length }}/{{ unarchiveds|length }}</div>
 <p>
 <form method="post" action="/archive">
     <input type="hidden" name="ids" value="{{ unarchiveds|join(',') }}" />
