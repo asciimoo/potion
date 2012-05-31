@@ -1,6 +1,8 @@
 {% extends "base.html" %}
+{% from '_helpers.html' import render_pagination with context %}
 {% block content %}
 
+{{ render_pagination(pagination,'/top') }}
 {% for item in items %}
 <div class="item">
  <div class="item_head">
@@ -21,6 +23,7 @@
  </div>
 </div>
 {% endfor %}
+{{ render_pagination(pagination,'/top') }}
 <hr />
 
 {% endblock %}
