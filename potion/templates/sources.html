@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="item">
- <h2>Add source</h2>
+    <h2>{% if mode=='add' %}Add{% elif mode=='modify' %}Modify{% endif %} source</h2>
  <form method="post">
   {% for field in form %}
     {% if field.type == 'TextField' %}

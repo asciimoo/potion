@@ -97,6 +97,7 @@ def sources():
     return render_template('sources.html'
                           ,form     = form
                           ,sources  = Source.query.all()
+                          ,mode     = 'add'
                           )
 
 @app.route('/sources/<int:s_id>', methods=['GET', 'POST'])
@@ -114,6 +115,7 @@ def source_modify(s_id=0):
     return render_template('sources.html'
                           ,form     = form
                           ,sources  = Source.query.all()
+                          ,mode     = 'modify'
                           ,menu_path= '/sources' #preserve menu highlight when paging
                           )
 
