@@ -6,7 +6,7 @@
  <div class="item_head">
   <ul>
    <li> {{ item.added.__str__()[:-7] }}</li>
-   {% if item.archived %}<li>[archived]</li>{% endif %}
+   <li>{% if item.archived %}[archived]{% else %}<a href="/archive/{{ item.item_id }}">archive</a>{% endif %}</li>
    {% for k,attr in item.attributes.iteritems() %}
    <li>{{ k }}: {{ attr }}</li>
    {% endfor %}

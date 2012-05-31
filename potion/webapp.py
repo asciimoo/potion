@@ -141,12 +141,19 @@ def do_query(q_str):
     return 'TODO ' + q_str
 
 @app.route('/archive', methods=['POST'])
-def archive():
-    try:
-        ids = map(int, request.form.get('ids', '').split(','))
-    except:
-        flash('Bad params')
+@app.route('/archive/<int:id>', methods=['GET'])
+def archive(id=0):
+    if request.method=='POST':
+        try:
+            ids = map(int, request.form.get('ids', '').split(','))
+        except:
+            flash('Bad params')
+            return redirect(request.referrer or '/')
+    elif id==0:
+        flash('Nothing to archive')
         return redirect(request.referrer or '/')
+    else:
+        ids=[id]
     db_session.query(Item).filter(Item.item_id.in_(ids)).update({Item.archived: True}, synchronize_session='fetch')
     db_session.commit()
     flash('Successfully archived items: %d' % len(ids))
