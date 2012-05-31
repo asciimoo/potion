@@ -28,7 +28,7 @@
         {% for source in sources %}
         <tr><td>{{ source.name }}</td>
             <td class="center">{{ source.source_type }}</td>
-            <td class="center">x</td>
+            <td class="center"><a href="/sources/{{ source.source_id }}" class="del_link">x</a></td>
             <td class="center"><a href="/sources/delete/{{ source.source_id }}" class="del_link">x</a></td>
             <td><a href="{{ source.address }}" title="{{ source.address }}">{{ source.address }}</a></td>
         </tr>

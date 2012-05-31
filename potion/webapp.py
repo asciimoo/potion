@@ -92,6 +92,23 @@ def sources():
                           ,sources  = Source.query.all()
                           )
 
+@app.route('/sources/<int:s_id>', methods=['GET', 'POST'])
+def source_modify(s_id=0):
+    source=Source.query.get(s_id)
+    form=SourceForm(obj=source)
+    if request.method == 'POST' and form.validate():
+        source.name=form.name.data
+        source.source_type=form.source_type.data
+        source.address=form.address.data
+        db_session.add(source)
+        db_session.commit()
+        flash('Source "%s" modified' % form.name.data)
+        return redirect('/sources')
+    return render_template('sources.html'
+                          ,form     = form
+                          ,sources  = Source.query.all()
+                          )
+
 @app.route('/sources/delete/<int:s_id>', methods=['GET'])
 def del_source(s_id):
     Source.query.filter(Source.source_id==s_id).delete()
