@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="item">
- <h2>Add source</h2>
+    <h2>{% if mode=='add' %}Add{% elif mode=='modify' %}Modify{% endif %} source</h2>
  <form method="post">
   {% for field in form %}
     {% if field.type == 'TextField' %}
@@ -28,7 +28,7 @@
         {% for source in sources %}
         <tr><td>{{ source.name }}</td>
             <td class="center">{{ source.source_type }}</td>
-            <td class="center">x</td>
+            <td class="center"><a href="/sources/{{ source.source_id }}" class="del_link">x</a></td>
             <td class="center"><a href="/sources/delete/{{ source.source_id }}" class="del_link">x</a></td>
             <td><a href="{{ source.address }}" title="{{ source.address }}">{{ source.address }}</a></td>
         </tr>

@@ -21,6 +21,7 @@ from flask import Flask, request, render_template, redirect, flash
 from potion.models import db_session, Item, Source, Query
 from potion.common import cfg
 from flaskext.wtf import Form, TextField, Required, SubmitField
+from potion.helpers import Pagination
 
 
 menu_items  = (('/'                 , 'home')
@@ -49,6 +50,7 @@ def contex():
            ,'cfg'               : cfg
            ,'query'             : ''
            ,'path'              : request.path
+           ,'menu_path'         : request.path
            ,'unarchived_count'  : Item.query.filter(Item.archived==False).count()
            ,'item_count'        : Item.query.count()
            }
@@ -70,12 +72,17 @@ def doc():
     return 'TODO'
 
 @app.route('/top', methods=['GET'])
-def top():
+@app.route('/top/<int:page_num>', methods=['GET'])
+def top(page_num=0):
     limit = int(cfg.get('app', 'items_per_page'))
-    items = Item.query.filter(Item.archived==False).order_by(Item.added).limit(limit).all()
+    offset = limit*page_num
+    items = Item.query.filter(Item.archived==False).order_by(Item.added).limit(limit).offset(offset).all()
+    pagination = Pagination(page_num, limit, Item.query.filter(Item.archived==False).count())
     return render_template('flat.html'
                           ,items        = items
+                          ,pagination   = pagination
                           ,unarchiveds  = get_unarchived_ids(items)
+                          ,menu_path    = '/top' #preserve menu highlight when paging
                           )
 
 @app.route('/sources', methods=['GET', 'POST'])
@@ -90,6 +97,26 @@ def sources():
     return render_template('sources.html'
                           ,form     = form
                           ,sources  = Source.query.all()
+                          ,mode     = 'add'
+                          )
+
+@app.route('/sources/<int:s_id>', methods=['GET', 'POST'])
+def source_modify(s_id=0):
+    source=Source.query.get(s_id)
+    form=SourceForm(obj=source)
+    if request.method == 'POST' and form.validate():
+        source.name=form.name.data
+        source.source_type=form.source_type.data
+        source.address=form.address.data
+        db_session.add(source)
+        db_session.commit()
+        flash('Source "%s" modified' % form.name.data)
+        return redirect('/sources')
+    return render_template('sources.html'
+                          ,form     = form
+                          ,sources  = Source.query.all()
+                          ,mode     = 'modify'
+                          ,menu_path= '/sources' #preserve menu highlight when paging
                           )
 
 @app.route('/sources/delete/<int:s_id>', methods=['GET'])
@@ -124,12 +151,19 @@ def do_query(q_str):
     return 'TODO ' + q_str
 
 @app.route('/archive', methods=['POST'])
-def archive():
-    try:
-        ids = map(int, request.form.get('ids', '').split(','))
-    except:
-        flash('Bad params')
+@app.route('/archive/<int:id>', methods=['GET'])
+def archive(id=0):
+    if request.method=='POST':
+        try:
+            ids = map(int, request.form.get('ids', '').split(','))
+        except:
+            flash('Bad params')
+            return redirect(request.referrer or '/')
+    elif id==0:
+        flash('Nothing to archive')
         return redirect(request.referrer or '/')
+    else:
+        ids=[id]
     db_session.query(Item).filter(Item.item_id.in_(ids)).update({Item.archived: True}, synchronize_session='fetch')
     db_session.commit()
     flash('Successfully archived items: %d' % len(ids))

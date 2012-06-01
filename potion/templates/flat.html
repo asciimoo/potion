@@ -1,12 +1,14 @@
 {% extends "base.html" %}
+{% from '_helpers.html' import render_pagination with context %}
 {% block content %}
 
+{{ render_pagination(pagination,'/top') }}
 {% for item in items %}
 <div class="item">
  <div class="item_head">
   <ul>
    <li> {{ item.added.__str__()[:-7] }}</li>
-   {% if item.archived %}<li>[archived]</li>{% endif %}
+   <li>{% if item.archived %}[archived]{% else %}<a href="/archive/{{ item.item_id }}">archive</a>{% endif %}</li>
    {% for k,attr in item.attributes.iteritems() %}
    <li>{{ k }}: {{ attr }}</li>
    {% endfor %}
@@ -21,6 +23,7 @@
  </div>
 </div>
 {% endfor %}
+{{ render_pagination(pagination,'/top') }}
 <hr />
 
 {% endblock %}

@@ -52,3 +52,5 @@ input.text { display: block; margin: 2px 16px; width: 400px; }
 
 .right { float: right; }
 .center { text-align: center; }
+
+.pagination { width:100%; text-align:center; margin:10px; }
