@@ -1,6 +1,5 @@
 .potionrc
 *.pyc
-*.py
 .*.swp
 env
 *.sqlite
