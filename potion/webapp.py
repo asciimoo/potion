@@ -20,7 +20,7 @@
 from flask import Flask, request, render_template, redirect, flash
 from potion.models import db_session, Item, Source, Query
 from potion.common import cfg
-from flaskext.wtf import Form, TextField, Required, SubmitField
+from flask.ext.wtf import Form, TextField, Required, SubmitField
 from potion.helpers import Pagination
 
 
