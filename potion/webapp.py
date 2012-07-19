@@ -126,11 +126,17 @@ def del_source(s_id):
     return redirect(request.referrer or '/')
 
 @app.route('/all')
-def all():
+@app.route('/all/<int:page_num>')
+def all(page_num=0):
+    limit = int(cfg.get('app', 'items_per_page'))
+    offset = limit*page_num
     items = Item.query.all()
+    pagination = Pagination(page_num, limit, Item.query.filter(Item.archived==False).count())
     return render_template('flat.html'
+                          ,pagination   = pagination
                           ,items        = items
                           ,unarchiveds  = get_unarchived_ids(items)
+                          ,menu_path= '/all'
                           )
 
 @app.route('/queries', methods=['GET'])
@@ -194,7 +200,7 @@ def opml_import():
             else:
                 import_outline_element(f)
 
-    import_outline_element(o) 
+    import_outline_element(o)
     db_session.commit()
     flash('import successed')
     return redirect(request.referrer or '/')
