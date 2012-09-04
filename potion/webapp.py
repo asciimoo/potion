@@ -73,9 +73,9 @@ def doc():
 
 @app.route('/top', methods=['GET'])
 @app.route('/top/<int:page_num>', methods=['GET'])
-def top(page_num=0):
+def top(page_num=1):
     limit = int(cfg.get('app', 'items_per_page'))
-    offset = limit*page_num
+    offset = limit*(page_num-1)
     items = Item.query.filter(Item.archived==False).order_by(Item.added).limit(limit).offset(offset).all()
     pagination = Pagination(page_num, limit, Item.query.filter(Item.archived==False).count())
     return render_template('flat.html'
@@ -132,10 +132,10 @@ def del_source(s_id):
 
 @app.route('/all')
 @app.route('/all/<int:page_num>')
-def all(page_num=0):
+def all(page_num=1):
     limit = int(cfg.get('app', 'items_per_page'))
-    offset = limit*page_num
-    items = Item.query.all()
+    offset = limit*(page_num-1)
+    items = Item.query.order_by(Item.added).limit(limit).offset(offset).all()
     pagination = Pagination(page_num, limit, Item.query.filter(Item.archived==False).count())
     return render_template('flat.html'
                           ,pagination   = pagination
