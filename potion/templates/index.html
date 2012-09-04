@@ -8,7 +8,7 @@
  <h2>Sources</h2>
  <ul>
   {% for source in sources %}
-      <li>{{ source.name }} ({{ source.source_type }})</li>
+    <li><a href="/query/_{{ source.name }}">{{ source.name }}</a> ({{ source.source_type }})</li>
   {% else %}
    <li>No Sources</li>
   {% endfor %}
