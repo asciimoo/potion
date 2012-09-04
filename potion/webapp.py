@@ -25,7 +25,7 @@ from potion.helpers import Pagination
 
 
 menu_items  = (('/'                 , 'home')
-              ,('/doc'              , 'documentation')
+              #,('/doc'              , 'documentation')
               ,('/sources'          , 'sources')
               ,('/queries'          , 'queries')
               ,('/top'              , 'top '+cfg.get('app', 'items_per_page'))
@@ -89,9 +89,14 @@ def top(page_num=0):
 def sources():
     form = SourceForm(request.form)
     if request.method == 'POST' and form.validate():
-        s = Source(form.name.data, form.source_type.data, form.address.data)
-        db_session.add(s)
-        db_session.commit()
+        try:
+            s = Source(form.name.data, form.source_type.data, form.address.data)
+            db_session.add(s)
+            db_session.commit()
+        except Exception, e:
+            flash('[!] Insertion error: %r' % e)
+            db_session.rollback()
+            return redirect('/sources')
         flash('Source "%s" added' % form.name.data)
         return redirect(request.referrer or '/')
     return render_template('sources.html'
