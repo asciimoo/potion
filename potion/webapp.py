@@ -18,6 +18,7 @@
 # (C) 2012- by Adam Tauber, <asciimoo@gmail.com>
 
 from flask import Flask, request, render_template, redirect, flash
+from sqlalchemy import not_
 from potion.models import db_session, Item, Source, Query
 from potion.common import cfg
 from flask.ext.wtf import Form, TextField, Required, SubmitField
@@ -160,7 +161,33 @@ def query_redirect():
 
 @app.route('/query/<path:q_str>', methods=['GET'])
 def do_query(q_str):
-    return 'TODO ' + q_str
+    page_num = 1
+    rules = q_str.split(',')
+    query = db_session.query(Item).filter(Item.source_id==Source.source_id)
+    for rule in rules:
+        if rule.find(':') != -1:
+            item, value = rule.split(':', 1)
+            if item.startswith('~'):
+                query = query.filter(getattr(Item, item[1:]).contains(value))
+            elif item.startswith('-'):
+                query = query.filter(not_(getattr(Item, item[1:]).contains(value)))
+            else:
+                query = query.filter(getattr(Item, item) == value)
+            continue
+        if rule.startswith('_'):
+            query = query.filter(Source.name == rule[1:])
+            continue
+    count = query.count()
+    limit = int(cfg.get('app', 'items_per_page'))
+    offset = limit*(page_num-1)
+    items = query.limit(limit).offset(offset).all()
+    pagination = Pagination(page_num, limit, count)
+    return render_template('flat.html'
+                          ,pagination   = pagination
+                          ,items        = items
+                          ,unarchiveds  = get_unarchived_ids(items)
+                          ,menu_path= '/all'
+                          )
 
 @app.route('/archive', methods=['POST'])
 @app.route('/archive/<int:id>', methods=['GET'])
