@@ -1,13 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="item">
- <h2>Import OPML</h2>
- <p>
- <form method="get" action="/opml/import">
-    <input type="text" name="url" value="path/url" />
-    <input type="submit" value="import" />
-   </form>
-</p>
+<div class="box">
+    <h2>unread items</h2>
+    <p>{{ unreads }}</p>
+</div>
+<div class="box">
  <h2>Sources</h2>
  <ul>
   {% for source in sources %}
@@ -16,5 +13,14 @@
    <li>No Sources</li>
   {% endfor %}
  </ul>
+</div>
+<div class="box">
+ <h2>Import OPML</h2>
+ <p>
+  <form method="get" action="/opml/import">
+   <input type="text" name="url" value="path/url" />
+   <input type="submit" value="import" />
+  </form>
+ </p>
 </div>
 {% endblock %}

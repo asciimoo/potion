@@ -28,7 +28,7 @@ menu_items  = (('/'                 , 'home')
               #,('/doc'              , 'documentation')
               ,('/sources'          , 'sources')
               ,('/queries'          , 'queries')
-              ,('/top'              , 'top '+cfg.get('app', 'items_per_page'))
+              ,('/top'              , 'top %s unarchived' % cfg.get('app', 'items_per_page'))
               ,('/all'              , 'all')
               )
 
@@ -62,6 +62,7 @@ def parse_query(q):
 def index():
     return render_template('index.html'
                           ,sources  = Source.query.all()
+                          ,unreads  = Item.query.filter(Item.archived==False).count()
                           )
 
 def get_unarchived_ids(items):

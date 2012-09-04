@@ -2,6 +2,8 @@ body, div, table, tr, td, h1, h2, h3, h4, pre, p { padding: 0; margin: 0; }
 
 body { background: #222222 url('/static/images/bg.gif') repeat; background-attachment: fixed; color: #FFFFFF; font-family: Arial; }
 
+
+h2 { text-transform: uppercase; }
 input { margin: 0; padding: 0.5em; background: #000000; color: #FFFFFF; font-weight: bold; border: 1px solid #444444; }
 hr { margin: 0; border: 1px solid #5B5BC7; }
 label { display: block; }
@@ -49,6 +51,10 @@ input.text { display: block; margin: 2px 16px; width: 400px; }
 .item_head { width: 100%; }
 .item_head ul { margin: 0; padding: 0; }
 .item_head ul li { list-style: none; float: right; padding: 4px; }
+
+.box { margin: 20px; border: 4px solid #000000; float: left; width: 25%; height: 25%; background: #111111; padding-bottom: 10px; }
+.box h2 { background: #000000; text-align: center; margin-bottom: 10px; padding: 8px; }
+.box p  { padding: 20px; text-align: center; }
 
 .right { float: right; }
 .center { text-align: center; }
