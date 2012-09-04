@@ -36,7 +36,7 @@ input.text { display: block; margin: 2px 16px; width: 400px; }
 
 #content { clear: both; margin: 0 20px; margin-bottom: 100px; }
 
-.item { border: 2px solid #000000; font-size: 0.8em; clear: both; background-color: #080808; }
+.item { border: 2px solid #000000; font-size: 0.8em; clear: both; background-color: #111111; }
 
 .item_body { margin: 4px 0; padding: 0 8px; clear: both; }
 .item_body pre { overflow: auto; padding: 4px;  }
