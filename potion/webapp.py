@@ -162,6 +162,12 @@ def query_redirect():
 @app.route('/query/<path:q_str>', methods=['GET'])
 def do_query(q_str):
     page_num = 1
+    if(q_str.find('/')):
+        try:
+            page_num = int(q_str.split('/')[-1])
+            q_str = ''.join(q_str.split('/')[:-1])
+        except:
+            pass
     rules = q_str.split(',')
     query = db_session.query(Item).filter(Item.source_id==Source.source_id)
     for rule in rules:
@@ -186,7 +192,7 @@ def do_query(q_str):
                           ,pagination   = pagination
                           ,items        = items
                           ,unarchiveds  = get_unarchived_ids(items)
-                          ,menu_path= '/all'
+                          ,menu_path    = '/query/%s' % q_str
                           )
 
 @app.route('/archive', methods=['POST'])
