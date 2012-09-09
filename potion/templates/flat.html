@@ -8,7 +8,7 @@
  <div class="item_head">
   <ul>
    <li> {{ item.added.__str__()[:-7] }}</li>
-   <li>{% if item.archived %}[archived]{% else %}<a href="/archive/{{ item.item_id }}">archive</a>{% endif %}</li>
+   <li>{% if item.archived %}[archived]{% else %}<a href="/archive/{{ item.item_id }}" class="archive_link" target="status_frame">archive</a>{% endif %}</li>
    {% for k,attr in item.attributes.iteritems() %}
    <li>{{ k }}: {{ attr }}</li>
    {% endfor %}
@@ -31,10 +31,10 @@
 {% block footer %}
 
 <div class="right">page: {{ items|length }}/{{ unarchiveds|length }}</div>
-<p>
+<div class="left">
 <form method="post" action="/archive">
     <input type="hidden" name="ids" value="{{ unarchiveds|join(',') }}" />
     <input type="submit" value="ARCHIVE THIS VIEW" />
 </form>
-</p>
+</div>
 {% endblock %}

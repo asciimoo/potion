@@ -138,7 +138,7 @@ def all(page_num=1):
     limit = int(cfg.get('app', 'items_per_page'))
     offset = limit*(page_num-1)
     items = Item.query.order_by(Item.added).limit(limit).offset(offset).all()
-    pagination = Pagination(page_num, limit, Item.query.filter(Item.archived==False).count())
+    pagination = Pagination(page_num, limit, Item.query.count())
     return render_template('flat.html'
                           ,pagination   = pagination
                           ,items        = items
@@ -211,6 +211,8 @@ def archive(id=0):
         ids=[id]
     db_session.query(Item).filter(Item.item_id.in_(ids)).update({Item.archived: True}, synchronize_session='fetch')
     db_session.commit()
+    if id:
+        return render_template('status.html', messages=['item(%s) archived' % id])
     flash('Successfully archived items: %d' % len(ids))
     return redirect(request.referrer or '/')
 

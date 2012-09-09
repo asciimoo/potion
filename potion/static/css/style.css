@@ -57,6 +57,7 @@ input.text { display: block; margin: 2px 16px; width: 400px; }
 .box p  { padding: 20px; text-align: center; }
 
 .right { float: right; }
+.left { float: left; }
 .center { text-align: center; }
 
 .pagination { width:100%; text-align:center; margin:10px; }
