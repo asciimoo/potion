@@ -18,6 +18,10 @@
 # (c) 2012- by adam tauber, <asciimoo@gmail.com>
 
 
+from sys import path
+from os.path import realpath, dirname
+path.append(realpath(dirname(realpath(__file__))+'/../../'))
+
 import re
 
 from feedparser import parse

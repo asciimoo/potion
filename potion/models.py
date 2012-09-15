@@ -17,6 +17,11 @@
 #
 # (c) 2012- by adam tauber, <asciimoo@gmail.com>
 
+if __name__ == '__main__':
+    from sys import path
+    from os.path import realpath, dirname
+    path.append(realpath(dirname(realpath(__file__))+'/../../'))
+
 from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, Text, DateTime, Boolean, PickleType
 from sqlalchemy.orm import relationship, scoped_session, sessionmaker, backref
 from sqlalchemy.ext.declarative import declarative_base

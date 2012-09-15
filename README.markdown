@@ -16,18 +16,19 @@ Potion (aka f33dme-ng) is a flask+sqlalchemy based feed/item reader.
 
 ### Installation
 
-1.  install dependencies: `easy_install sqlalchemy feedparser flask flask-wtf opml`
-2.  clone source: `git clone git@github.com:asciimoo/potion.git && cd potion`
-3.  copy potionrc_sample to ./.potionrc or ~/.potionrc or /etc/potion.cfg: `cp potionrc_sample ~/.potionrc`
-4.  edit your config (set your secret_key!)
-5.  run `PYTHONPATH=$(pwd) python potion/models.py init` to initialize your db
-6.  run `PYTHONPATH=$(pwd) python potion/webapp.py` to start the application
+#   install dependencies: `easy_install sqlalchemy feedparser flask flask-wtf`
+#   install optional dependencies: `easy_install opml`
+#   clone source: `git clone git@github.com:asciimoo/potion.git && cd potion`
+#   copy potionrc_sample to ./.potionrc or ~/.potionrc or /etc/potion.cfg: `cp potionrc_sample ~/.potionrc`
+#   edit your config (set your secret_key!)
+#   run `python potion/models.py init` to initialize your db
+#   run `python potion/webapp.py` to start the application
 
 ### Usage
 
-*   run `PYTHONPATH=$(pwd) python potion/sources/feed.py` to fetch new feed items
-*   run `PYTHONPATH=$(pwd) python potion/models.py` to get a python shell with db models
-*   run `PYTHONPATH=$(pwd) python potion/models.py load <feeds` where `feeds` contains a 'name\turl\n' formated list of feeds (import from f33dme/export.py)
+*   run `python potion/sources/feed.py` to fetch new feed items
+*   run `python potion/models.py` to get a python shell with db models
+*   run `python potion/models.py load <feeds` where `feeds` contains a 'name\turl\n' formated list of feeds (import from f33dme/export.py)
 
 ### License
 

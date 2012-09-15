@@ -17,6 +17,11 @@
 #
 # (C) 2012- by Adam Tauber, <asciimoo@gmail.com>
 
+if __name__ == "__main__":
+    from sys import path
+    from os.path import realpath, dirname
+    path.append(realpath(dirname(realpath(__file__))+'/../'))
+
 from flask import Flask, request, render_template, redirect, flash
 from sqlalchemy import not_
 from potion.models import db_session, Item, Source, Query
