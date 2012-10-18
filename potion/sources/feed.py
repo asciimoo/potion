@@ -61,7 +61,7 @@ def urlSanitize(url):
     pcs=urlparse(urllib.unquote_plus(url))
     tmp=list(pcs)
     tmp[4]='&'.join(ifilterfalse(utmRe.match, pcs.query.split('&')))
-    return urlunparse(tmp)
+    return urlunparse(tmp).decode('utf-8')
 
 def fetchFeed(url):
     try:
@@ -93,13 +93,18 @@ def parseFeed(feed):
         pass
     d = feed.updated
     for item in reversed(f['entries']):
+        original_url = unicode(item['links'][0]['href'])
+
+        # checking duplications
+        if db_session.query(Item). \
+                filter(Item.source_id==feed.source_id). \
+                filter(Item.original_url==original_url).first():
+            continue
+
         try:
-           u = urlSanitize(item['links'][0]['href'])
+           u = urlSanitize(original_url)
         except:
            u = ''
-        # checking duplications
-        if db_session.query(Item).filter(Item.source_id==feed.source_id).filter(Item.url==unicode(u)).first():
-            continue
 
         try:
             tmp_date = datetime(*item['updated_parsed'][:6])
@@ -108,18 +113,18 @@ def parseFeed(feed):
 
         # title content updated
         try:
-            c = unicode(''.join([x.value for x in item.content]))
+            c = ''.join([x.value for x in item.content])
         except:
             c = u'[EE] No content found, plz check the feed (%s) and fix me' % feed.name
             for key in ['media_text', 'summary', 'description', 'media:description']:
                 if item.has_key(key):
-                    c = unicode(item[key])
+                    c = item[key]
                     break
 
-        t = unicode(item.get('title','[EE] Notitle'))
+        t = item.get('title','[EE] Notitle')
 
         # date as tmp_date?!
-        feed.items.append(Item(t, c, url=u, attributes={'date':tmp_date}))
+        feed.items.append(Item(t, c, original_url, url=u, attributes={'date':tmp_date}))
         db_session.commit()
         counter += 1
     feed.updated = d
