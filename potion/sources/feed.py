@@ -32,11 +32,13 @@ import urllib
 import urllib2
 import httplib
 
+from potion.common import cfg
 from potion.models import db_session, Source, Item
 
-opener = urllib2.build_opener()
-opener.addheaders = [('User-agent', '')]
+user_agent = cfg.get('fetcher', 'user_agent')
 
+opener = urllib2.build_opener()
+opener.addheaders = [('User-agent', user_agent)]
 
 # removes annoying UTM params to urls.
 utmRe=re.compile('utm_(source|medium|campaign|content)=')
@@ -51,7 +53,7 @@ def urlSanitize(url):
         conn = httplib.HTTPSConnection(us.netloc)
         req = urllib.quote(url[8+len(us.netloc):])
     #conn.set_debuglevel(9)
-    headers={'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)'}
+    headers={'User-Agent': user_agent}
     conn.request("HEAD", req,None,headers)
     res = conn.getresponse()
     conn.close()
