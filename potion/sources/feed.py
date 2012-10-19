@@ -86,13 +86,21 @@ def parseFeed(feed):
         return counter
     #print '[!] parsing %s - %s' % (feed.name, feed.url)
     try:
+        if feed.attributes['etag'] != f.etag:
+            return
+    except KeyError:
+        pass
+
+    try:
         feed.attributes['etag'] = f.etag
     except AttributeError:
         pass
+
     try:
         feed.attributes['modified'] = f.modified
     except AttributeError:
         pass
+
     d = feed.updated
     for item in reversed(f['entries']):
         original_url = unicode(item['links'][0]['href'])
