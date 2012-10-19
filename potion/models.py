@@ -113,15 +113,17 @@ class Item(Base):
     name          = Column(String(1023))
     content       = Column(Text)
     url           = Column(Text)
+    original_url  = Column(Text)
     archived      = Column(Boolean)
     attributes    = Column(PickleType(comparator=dict.__eq__))
 
-    def __init__(self, name, content, url='', attributes={}):
-        self.name           = name
-        self.content        = content
+    def __init__(self, name, content, original_url, url='', attributes={}):
+        self.name           = unicode(name)
+        self.content        = unicode(content)
         self.added          = datetime.now()
         self.archived       = False
-        self.url            = url
+        self.url            = unicode(url)
+        self.original_url   = unicode(original_url)
         self.attributes     = attributes
 
     def __repr__(self):

@@ -32,11 +32,13 @@ import urllib
 import urllib2
 import httplib
 
+from potion.common import cfg
 from potion.models import db_session, Source, Item
 
-opener = urllib2.build_opener()
-opener.addheaders = [('User-agent', '')]
+user_agent = cfg.get('fetcher', 'user_agent')
 
+opener = urllib2.build_opener()
+opener.addheaders = [('User-agent', user_agent)]
 
 # removes annoying UTM params to urls.
 utmRe=re.compile('utm_(source|medium|campaign|content)=')
@@ -51,7 +53,7 @@ def urlSanitize(url):
         conn = httplib.HTTPSConnection(us.netloc)
         req = urllib.quote(url[8+len(us.netloc):])
     #conn.set_debuglevel(9)
-    headers={'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)'}
+    headers={'User-Agent': user_agent}
     conn.request("HEAD", req,None,headers)
     res = conn.getresponse()
     conn.close()
@@ -61,7 +63,7 @@ def urlSanitize(url):
     pcs=urlparse(urllib.unquote_plus(url))
     tmp=list(pcs)
     tmp[4]='&'.join(ifilterfalse(utmRe.match, pcs.query.split('&')))
-    return urlunparse(tmp)
+    return urlunparse(tmp).decode('utf-8')
 
 def fetchFeed(url):
     try:
@@ -84,22 +86,35 @@ def parseFeed(feed):
         return counter
     #print '[!] parsing %s - %s' % (feed.name, feed.url)
     try:
+        if feed.attributes['etag'] != f.etag:
+            return
+    except KeyError:
+        pass
+
+    try:
         feed.attributes['etag'] = f.etag
     except AttributeError:
         pass
+
     try:
         feed.attributes['modified'] = f.modified
     except AttributeError:
         pass
+
     d = feed.updated
     for item in reversed(f['entries']):
+        original_url = unicode(item['links'][0]['href'])
+
+        # checking duplications
+        if db_session.query(Item). \
+                filter(Item.source_id==feed.source_id). \
+                filter(Item.original_url==original_url).first():
+            continue
+
         try:
-           u = urlSanitize(item['links'][0]['href'])
+           u = urlSanitize(original_url)
         except:
            u = ''
-        # checking duplications
-        if db_session.query(Item).filter(Item.source_id==feed.source_id).filter(Item.url==unicode(u)).first():
-            continue
 
         try:
             tmp_date = datetime(*item['updated_parsed'][:6])
@@ -108,18 +123,18 @@ def parseFeed(feed):
 
         # title content updated
         try:
-            c = unicode(''.join([x.value for x in item.content]))
+            c = ''.join([x.value for x in item.content])
         except:
             c = u'[EE] No content found, plz check the feed (%s) and fix me' % feed.name
             for key in ['media_text', 'summary', 'description', 'media:description']:
                 if item.has_key(key):
-                    c = unicode(item[key])
+                    c = item[key]
                     break
 
-        t = unicode(item.get('title','[EE] Notitle'))
+        t = item.get('title','[EE] Notitle')
 
         # date as tmp_date?!
-        feed.items.append(Item(t, c, url=u, attributes={'date':tmp_date}))
+        feed.items.append(Item(t, c, original_url, url=u, attributes={'date':tmp_date}))
         db_session.commit()
         counter += 1
     feed.updated = d
