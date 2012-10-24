@@ -103,7 +103,10 @@ def parseFeed(feed):
 
     d = feed.updated
     for item in reversed(f['entries']):
-        original_url = unicode(item['links'][0]['href'])
+        if 'links' in item:
+            original_url = unicode(item['links'][0]['href'])
+        else:
+            original_url = unicode(item['link'])
 
         # checking duplications
         if db_session.query(Item). \
