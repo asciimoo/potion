@@ -34,6 +34,7 @@ import httplib
 
 from potion.common import cfg
 from potion.models import db_session, Source, Item
+from potion import proxy
 
 user_agent = cfg.get('fetcher', 'user_agent')
 
