@@ -173,6 +173,11 @@ def do_query(q_str):
             q_str = ''.join(q_str.split('/')[:-1])
         except:
             pass
+
+    if(q_str.startswith('!')):
+        q_str = q_str[1:]
+        reverse = True
+
     rules = q_str.split(',')
     query = db_session.query(Item).filter(Item.source_id==Source.source_id)
     for rule in rules:
@@ -192,6 +197,9 @@ def do_query(q_str):
     limit = int(cfg.get('app', 'items_per_page'))
     offset = limit*(page_num-1)
     items = query.limit(limit).offset(offset).all()
+    if reverse:
+        items.reverse()
+
     pagination = Pagination(page_num, limit, count)
     return render_template('flat.html'
                           ,pagination   = pagination
