@@ -130,6 +130,7 @@ def parseFeed(feed):
         # title content updated
         try:
             c = ''.join([x.value for x in item.content])
+
         except:
             c = u'[EE] No content found, plz check the feed (%s) and fix me' % feed.name
             for key in ['media_text', 'summary', 'description', 'media:description']:
@@ -138,7 +139,10 @@ def parseFeed(feed):
                     break
 
         #fixing malformed html
-        c=etree.tostring(etree.parse(StringIO(c), etree.XMLParser(recover=True)))
+        html=etree.parse(StringIO(c), etree.HTMLParser(recover=True, remove_blank_text=True))
+        c=''
+        for e in html.xpath('//body/*'):
+            c+=etree.tostring(e)
 
         t = item.get('title','[EE] Notitle')
 
