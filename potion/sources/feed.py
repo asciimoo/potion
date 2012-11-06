@@ -31,9 +31,12 @@ from itertools import ifilterfalse, imap
 import urllib
 import urllib2
 import httplib
+from lxml import etree
+from io import StringIO
 
 from potion.common import cfg
 from potion.models import db_session, Source, Item
+from potion import proxy
 
 user_agent = cfg.get('fetcher', 'user_agent')
 
@@ -133,6 +136,9 @@ def parseFeed(feed):
                 if item.has_key(key):
                     c = item[key]
                     break
+
+        #fixing malformed html
+        c=etree.tostring(etree.parse(StringIO(c), etree.XMLParser(recover=True)))
 
         t = item.get('title','[EE] Notitle')
 

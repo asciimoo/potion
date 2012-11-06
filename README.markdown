@@ -17,7 +17,7 @@ Potion (aka f33dme-ng) is a flask+sqlalchemy based feed/item reader.
 ### Installation
 
 *   install dependencies: `easy_install sqlalchemy feedparser flask flask-wtf`
-*   install optional dependencies: `easy_install opml`
+*   install optional dependencies: `easy_install opml SocksiPy-branch`
 *   clone source: `git clone git@github.com:asciimoo/potion.git && cd potion`
 *   copy potionrc_sample to ./.potionrc or ~/.potionrc or /etc/potion.cfg: `cp potionrc_sample ~/.potionrc`
 *   edit your config (set your secret_key!)
