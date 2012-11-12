@@ -43,6 +43,9 @@ user_agent = cfg.get('fetcher', 'user_agent')
 opener = urllib2.build_opener()
 opener.addheaders = [('User-agent', user_agent)]
 
+#allowed self_close tags
+allowed_self_close_tags = ('area','base','basefont','br','hr','input','img','link','meta')
+
 # removes annoying UTM params to urls.
 utmRe=re.compile('utm_(source|medium|campaign|content)=')
 def urlSanitize(url):
@@ -130,7 +133,6 @@ def parseFeed(feed):
         # title content updated
         try:
             c = ''.join([x.value for x in item.content])
-
         except:
             c = u'[EE] No content found, plz check the feed (%s) and fix me' % feed.name
             for key in ['media_text', 'summary', 'description', 'media:description']:
@@ -139,10 +141,18 @@ def parseFeed(feed):
                     break
 
         #fixing malformed html
-        html=etree.parse(StringIO(c), etree.HTMLParser(recover=True, remove_blank_text=True))
-        c=''
-        for e in html.xpath('//body/*'):
-            c+=etree.tostring(e)
+        if c:
+            original = c
+            c = ''
+            try:
+                phtml = etree.parse(StringIO(original), etree.HTMLParser())
+                for node in phtml.iter('*'):
+                    clean_description(node)
+                for node in phtml.xpath('//body/*'):
+                    c += etree.tostring(node)
+            except:
+                print u'[EE]description parsing error(%s - %s)' % (feed.name, u)
+                c = original
 
         t = item.get('title','[EE] Notitle')
 
@@ -154,6 +164,14 @@ def parseFeed(feed):
     db_session.commit()
     #feed.save()
     return counter
+
+#clean description to become valid xhtml by removing empty or self-closed tags which are not allowed according to http://dev.w3.org/html5/spec/single-page.html#normal-elements
+def clean_description(node):
+    p = node.getparent()
+    if p is not None and len(node.getchildren()) == 0 and (node.text is None or (node.text is not None and not node.text.strip())) and node.tag not in allowed_self_close_tags:
+        p.remove(node)
+        #we have to clean the parent again, because it could become empty after removing the current node
+        clean_description(p)
 
 if __name__ == '__main__':
     counter = sum(imap(parseFeed, Source.query.filter(Source.source_type=='feed').all()))
