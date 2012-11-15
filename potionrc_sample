@@ -11,9 +11,3 @@ connection          = sqlite:///potion.sqlite
 
 [fetcher]
 User_agent          = Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
-
-[proxy]
-#proxy_type = HTTP
-#proxy_type = SOCKS4
-#proxy_type = SOCKS5
-#proxy_address = hostname:port
