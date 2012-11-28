@@ -139,19 +139,19 @@ def parseFeed(feed):
                     c = item[key]
                     break
 
-        #fixing malformed html
-        if c:
-            original = c
-            c = ''
-            try:
-                phtml = etree.parse(StringIO(original), etree.HTMLParser())
-                for node in phtml.iter('*'):
-                    clean_description(node)
-                for node in phtml.xpath('//body/*'):
-                    c += etree.tostring(node)
-            except:
-                print u'[EE]description parsing error(%s - %s)' % (feed.name, u)
-                c = original
+#        #fixing malformed html
+#        if c:
+#            original = c
+#            c = ''
+#            try:
+#                phtml = etree.parse(StringIO(original), etree.HTMLParser())
+#                for node in phtml.iter('*'):
+#                    clean_description(node)
+#                for node in phtml.xpath('//body/*'):
+#                    c += etree.tostring(node)
+#            except:
+#                print u'[EE]description parsing error(%s - %s)' % (feed.name, u)
+#                c = original
 
         t = item.get('title','[EE] Notitle')
 
