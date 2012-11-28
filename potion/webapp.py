@@ -174,9 +174,9 @@ def do_query(q_str):
         except:
             pass
 
-    if(q_str.startswith('!')):
-        q_str = q_str[1:]
-        reverse = True
+    #if(q_str.startswith('!')):
+    #    q_str = q_str[1:]
+    #    reverse = True
 
     rules = q_str.split(',')
     query = db_session.query(Item).filter(Item.source_id==Source.source_id)
@@ -197,8 +197,8 @@ def do_query(q_str):
     limit = int(cfg.get('app', 'items_per_page'))
     offset = limit*(page_num-1)
     items = query.limit(limit).offset(offset).all()
-    if reverse:
-        items.reverse()
+    #if reverse:
+    #    items.reverse()
 
     pagination = Pagination(page_num, limit, count)
     return render_template('flat.html'
