@@ -11,3 +11,7 @@ connection          = sqlite:///potion.sqlite
 
 [fetcher]
 User_agent          = Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+
+[cache]
+dir = /path/to/your/cache/dir
+url = /static/cache
