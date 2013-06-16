@@ -134,6 +134,7 @@ def source_modify(s_id=0):
 @app.route('/sources/delete/<int:s_id>', methods=['GET'])
 def del_source(s_id):
     Source.query.filter(Source.source_id==s_id).delete()
+    db_session.commit()
     flash('Source removed')
     return redirect(request.referrer or '/')
 
