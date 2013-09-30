@@ -30,6 +30,16 @@ Potion (aka f33dme-ng) is a flask+sqlalchemy based feed/item reader.
 *   run `python potion/models.py` to get a python shell with db models
 *   run `python potion/models.py load <feeds` where `feeds` contains a 'name\turl\n' formated list of feeds (import from f33dme/export.py)
 
+### Screenshots
+
+Main page
+
+[![Main page](https://raw.github.com/asciimoo/potion/master/potion/screenshots/potion_home.png)]
+
+Items
+
+[![Items page](https://raw.github.com/asciimoo/potion/master/potion/screenshots/potion_top50.png)]
+
 ### License
 
 potion is free software: you can redistribute it and/or modify
