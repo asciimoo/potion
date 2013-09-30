@@ -34,11 +34,11 @@ Potion (aka f33dme-ng) is a flask+sqlalchemy based feed/item reader.
 
 Main page
 
-(https://raw.github.com/asciimoo/potion/master/screenshots/potion_home.png)
+![Main page](https://raw.github.com/asciimoo/potion/master/screenshots/potion_home.png)
 
 Items
 
-(https://raw.github.com/asciimoo/potion/master/screenshots/potion_top50.png)
+![Items](https://raw.github.com/asciimoo/potion/master/screenshots/potion_top50.png)
 
 ### License
 
